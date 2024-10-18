@@ -1,4 +1,3 @@
-import { groups } from "@/data/groups";
 import { Group } from "@/types";
 
 /**
@@ -8,6 +7,6 @@ import { Group } from "@/types";
  *
  * @param ids - The group ids
  */
-export async function getGroups(ids: string[]): Promise<Group[]> {
-  return groups.filter((group) => ids.includes(group.id));
+export async function getGroups(ids: string[]) {
+  return null;
 }

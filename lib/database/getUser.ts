@@ -1,6 +1,5 @@
-import { colors } from "@/data/colors";
-import { users } from "@/data/users";
-
+import { sql } from '@vercel/postgres';
+import { NextResponse } from 'next/server';
 /**
  * Get User
  *
@@ -9,26 +8,14 @@ import { users } from "@/data/users";
  * @param userId - The user's id
  */
 export async function getUser(userId: string) {
-  const user = users.find((user) => user.id === userId);
+  const user = await sql`SELECT * FROM users WHERE id IS ${userId};`;
 
   if (!user) {
-    console.warn(`
-ERROR: User "${userId}" was not found. 
-
-Check that you've added the user to data/users.ts, for example:
-{
-  id: "${userId}",
-  name: "Tchoka Ahoki",
-  avatar: "https://liveblocks.io/avatars/avatar-7.png",
-  groupIds: ["product", "engineering", "design"],
-},
- 
-`);
+    console.warn(`ERROR: User not found`);
     return null;
   }
 
-  const color = getRandom(colors, userId);
-  return { color, ...user };
+  return NextResponse.json({user}, {status: 200})
 }
 
 export function getRandom<T>(array: T[], seed?: string): T {
